@@ -1,0 +1,62 @@
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body { background: #000; color: #fff; font-family: -apple-system, sans-serif; line-height: 1.4; overflow-x: hidden; }
+
+/* BOLDER COUNTDOWN BANNER */
+#restock-banner { width: 100%; background: #ff0000; color: #fff; padding: 15px 0; text-align: center; position: sticky; top: 0; z-index: 10000; }
+.banner-content { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+#timer { font-size: 2.5rem; font-weight: 900; background: #000; padding: 5px 20px; border-radius: 4px; font-family: monospace; margin: 4px 0; }
+
+/* HEADER - BRANDING */
+header { display: flex; justify-content: space-between; align-items: flex-start; padding: 35px 20px; border-bottom: 1px solid #111; }
+.logo { font-size: 2.5rem; letter-spacing: 8px; font-weight: 900; line-height: 1; text-transform: uppercase; }
+
+/* VISIBLE INSTAGRAM LINK */
+.insta-link { display: flex; align-items: center; gap: 8px; color: #fff !important; text-decoration: none; font-size: 0.75rem; margin-top: 12px; font-weight: 900; letter-spacing: 1px; }
+.insta-link:hover { color: #ff0000 !important; }
+
+.nav-btn { background: #111; border: 1px solid #333; color: #fff; padding: 10px 15px; font-size: 0.65rem; cursor: pointer; font-weight: bold; }
+#cart-count { background: #ff0000; color: #fff; width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; position: absolute; top: 30px; right: 15px; }
+
+/* BOLDER MARQUEE */
+.text-marquee { background: #ff0000; border-top: 1px solid #1a1a1a; border-bottom: 1px solid #1a1a1a; padding: 15px 0; overflow: hidden; }
+.marquee-track { display: flex; white-space: nowrap; animation: marquee 20s linear infinite; }
+.marquee-track span { font-size: 0.85rem; font-weight: 900; letter-spacing: 2px; padding: 0 15px; text-transform: uppercase; }
+@keyframes marquee { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+/* SHOP GRID - PC LAYOUT (1 row of 4) */
+.shop { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 10px; max-width: 1400px; margin: 0 auto; }
+@media (min-width: 992px) {
+    .shop { grid-template-columns: 1fr 1fr 1fr 1fr; gap: 15px; padding: 40px 20px; }
+}
+
+.product-card { background: #050505; padding-bottom: 15px; border: 1px solid #111; position: relative; }
+.img-container { position: relative; width: 100%; aspect-ratio: 5/7; overflow: hidden; }
+.img-main, .img-hover { width: 100%; height: 100%; object-fit: cover; position: absolute; transition: opacity 0.3s; }
+.img-hover { opacity: 0; }
+.product-card:hover .img-hover { opacity: 1; }
+.badge { position: absolute; top: 10px; left: 10px; background: #ff0000; color: #fff; font-size: 0.5rem; padding: 3px 6px; z-index: 2; font-weight: 900; }
+
+h3 { font-size: 0.75rem; padding: 12px 10px 5px; font-weight: 900; }
+.old-price { text-decoration: line-through; color: #666; font-size: 0.8rem; margin-right: 8px; }
+.sale-red { color: #ff0000 !important; font-weight: 900; font-size: 1.2rem; }
+
+/* BUTTONS & HOVER */
+.controls { padding: 0 10px; display: flex; gap: 5px; }
+select { background: #111; color: #fff; border: 1px solid #333; font-size: 0.7rem; padding: 8px; flex: 1; outline: none; }
+.add-btn { background: #fff !important; color: #000 !important; border: none; font-size: 0.6rem; font-weight: 900; padding: 10px; flex: 2; cursor: pointer; transition: 0.2s; }
+
+/* PC HOVER RED */
+.product-card:hover .add-btn:hover { background: #ff0000 !important; color: #fff !important; }
+
+/* CART & REMOVE */
+.remove-btn { background: none; border: none; color: #ff0000; font-size: 0.6rem; font-weight: 900; cursor: pointer; text-decoration: underline; }
+
+/* MODALS & CHECKOUT */
+.modal { display: none; position: fixed; z-index: 10001; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); }
+.modal-content { background: #0a0a0a; margin: 10% auto; padding: 25px; width: 90%; max-width: 500px; border: 1px solid #222; }
+#checkout { padding: 50px 20px; border-top: 1px solid #1a1a1a; }
+.checkout-container { max-width: 800px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+input, textarea { width: 100%; background: #0a0a0a; border: 1px solid #222; color: #fff; padding: 15px; margin-bottom: 15px; outline: none; }
+.submit-btn { width: 100%; background: #fff; color: #000; border: none; padding: 20px; font-weight: 900; cursor: pointer; letter-spacing: 2px; }
+.submit-btn:disabled { background: #222; color: #555; }
+.whatsapp-float { position: fixed; bottom: 20px; right: 20px; background: #25d366; width: 55px; height: 55px; border-radius: 50%; display: flex; align-items: center; justify-content: center; z-index: 999; }
