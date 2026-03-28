@@ -11,6 +11,7 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const db = firebase.database();
 let cart = [];
+let freeShipping = false;
 
 function startCountdown() {
     const targetDate = new Date("April 17, 2026 13:00:00").getTime();
@@ -30,8 +31,15 @@ function syncStock() {
         const data = snap.val(); if (!data) return;
         for (let i = 1; i <= 4; i++) {
             const btn = document.getElementById(`stock-btn-${i}`);
-            if (data[`item${i}`] === false) { btn.innerText = "SOLD OUT"; btn.disabled = true; btn.style.background = "#222"; }
-            else { btn.innerText = "ADD TO CART"; btn.disabled = false; btn.style.background = "#fff"; }
+            if (data[`item${i}`] === false) { 
+                btn.innerText = "SOLD OUT"; 
+                btn.disabled = true; 
+                btn.style.background = "#222"; 
+            } else { 
+                btn.innerText = "ADD TO CART"; 
+                btn.disabled = false; 
+                btn.style.background = "#fff"; 
+            }
         }
     });
 }
@@ -48,11 +56,31 @@ function removeFromCart(id) {
     updateUI();
 }
 
+function applyPromo() {
+    const code = document.getElementById('promo-input').value.toUpperCase().trim();
+    const msg = document.getElementById('promo-msg');
+    
+    if (code === "PSD") {
+        freeShipping = true;
+        msg.innerText = "CODE APPLIED: FREE SHIPPING";
+        msg.style.color = "#25d366";
+    } else {
+        freeShipping = false;
+        msg.innerText = "INVALID CODE";
+        msg.style.color = "#ff0000";
+    }
+    updateUI();
+}
+
 function updateUI() {
     const display = document.getElementById('cart-display');
     const totalDisplay = document.getElementById('final-total');
+    const shippingDisplay = document.getElementById('shipping-fee');
+    
     display.innerHTML = cart.length === 0 ? "CART IS EMPTY" : "";
-    let subtotal = 0; let summary = "";
+    let subtotal = 0; 
+    let summary = "";
+
     cart.forEach(item => {
         subtotal += item.price;
         display.innerHTML += `
@@ -62,10 +90,23 @@ function updateUI() {
             </div>`;
         summary += `${item.name} (${item.size}) | `;
     });
-    const total = subtotal + (cart.length > 0 ? 15 : 0);
+
+    let shippingFee = (cart.length > 0) ? 20 : 0;
+    
+    if (freeShipping && cart.length > 0) {
+        shippingFee = 0;
+        if (shippingDisplay) shippingDisplay.innerHTML = `<span style="text-decoration:line-through; color:#666;">20 QAR</span> <span style="color:#25d366;">0 QAR</span>`;
+    } else {
+        if (shippingDisplay) shippingDisplay.innerText = shippingFee + " QAR";
+    }
+
+    const total = subtotal + shippingFee;
     totalDisplay.innerText = `${total} QAR`;
     document.getElementById('cart-count').innerText = cart.length;
-    document.getElementById('cart-input').value = summary + ` TOTAL: ${total} QAR`;
+    
+    // Hidden input for Formspree
+    const promoNote = freeShipping ? " [PROMO: PSD - FREE SHIPPING]" : "";
+    document.getElementById('cart-input').value = summary + promoNote + ` TOTAL: ${total} QAR`;
 }
 
 function validatePhone() {
@@ -76,13 +117,45 @@ function validatePhone() {
 document.getElementById('order-form').onsubmit = async function(e) {
     e.preventDefault();
     if(cart.length === 0) return;
+    
+    const submitBtn = document.getElementById('submit-order-btn');
+    submitBtn.disabled = true;
+    submitBtn.innerText = "PLACING ORDER...";
+
     const formData = new FormData(this);
     const guestId = localStorage.getItem('ynko_user') || "GUEST_" + Math.floor(Math.random() * 10000);
-    const orderData = { customer: guestId, name: formData.get('name'), phone: formData.get('phone'), items: document.getElementById('cart-input').value, status: "PENDING", timestamp: Date.now() };
-    await db.ref('orders').push(orderData);
-    localStorage.setItem('ynko_user', guestId);
-    await fetch(this.action, { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } });
-    alert("ORDER PLACED!"); cart = []; updateUI(); this.reset();
+    
+    const orderData = { 
+        customer: guestId, 
+        name: formData.get('name'), 
+        phone: formData.get('phone'), 
+        address: formData.get('address'),
+        items: document.getElementById('cart-input').value, 
+        status: "PENDING", 
+        timestamp: Date.now() 
+    };
+
+    try {
+        await db.ref('orders').push(orderData);
+        localStorage.setItem('ynko_user', guestId);
+        await fetch(this.action, { 
+            method: 'POST', 
+            body: formData, 
+            headers: { 'Accept': 'application/json' } 
+        });
+        alert("ORDER PLACED SUCCESSFULLY!");
+        cart = [];
+        freeShipping = false;
+        document.getElementById('promo-input').value = "";
+        document.getElementById('promo-msg').innerText = "";
+        updateUI();
+        this.reset();
+    } catch (error) {
+        alert("Something went wrong. Please try again.");
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = "PLACE ORDER";
+    }
 };
 
 function toggleOrders() {
@@ -93,10 +166,15 @@ function toggleOrders() {
         db.ref('orders').orderByChild('customer').equalTo(guestId).on('value', (snap) => {
             const list = document.getElementById('orders-list');
             list.innerHTML = "";
+            if (!snap.exists()) {
+                list.innerHTML = '<p style="font-size: 0.7rem; color: #444;">NO ACTIVE ORDERS FOUND.</p>';
+                return;
+            }
             snap.forEach((child) => {
                 const o = child.val();
-                list.innerHTML += `<div style="border:1px solid #222; padding:10px; margin-top:10px;">
-                    <span style="color:red; font-weight:900;">${o.status}</span><br>${o.items}
+                list.innerHTML += `<div style="border:1px solid #222; padding:10px; margin-top:10px; background:#050505;">
+                    <span style="color:#ff0000; font-weight:900; font-size:0.7rem;">STATUS: ${o.status}</span><br>
+                    <p style="font-size:0.65rem; color:#ccc; margin-top:5px;">${o.items}</p>
                 </div>`;
             });
         });
