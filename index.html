@@ -1,132 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>YNKO | Official Shop</title>
-    <link rel="icon" type="image/png" href="favicon.png">
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-
-    <div id="restock-banner">
-        <div class="banner-content">
-            <span class="banner-label">NEXT DROP IN:</span>
-            <span id="timer">00:00:00</span>
-            <span class="banner-status">// APRIL 17 @ 1PM QATAR</span>
-        </div>
-    </div>
-
-    <header>
-        <div class="header-left">
-            <h1 class="logo">YNKO</h1>
-            <a href="https://instagram.com/ynko.drip" target="_blank" class="insta-link">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
-                FOLLOW @YNKO.DRIP
-            </a>
-        </div>
-        <div class="header-right">
-            <button class="nav-btn" onclick="toggleOrders()">MY ORDERS</button>
-            <div id="cart-count">0</div>
-        </div>
-    </header>
-
-    <div class="text-marquee">
-        <div class="marquee-track">
-            <span>NEW DROP // LIMITED STOCK // QATAR DELIVERY // CASH ON DELIVERY // </span>
-            <span>NEW DROP // LIMITED STOCK // QATAR DELIVERY // CASH ON DELIVERY // </span>
-            <span>NEW DROP // LIMITED STOCK // QATAR DELIVERY // CASH ON DELIVERY // </span>
-        </div>
-    </div>
-
-    <div id="orders-modal" class="modal">
-        <div class="modal-content">
-            <span class="close" onclick="toggleOrders()">&times;</span>
-            <h2>ORDER STATUS</h2>
-            <div id="orders-list">
-                <p style="font-size: 0.7rem; color: #444;">NO ACTIVE ORDERS FOUND.</p>
-            </div>
-        </div>
-    </div>
-
-    <main class="shop">
-        <div class="product-card">
-            <div class="img-container">
-                <span class="badge">SALE</span>
-                <img src="https://res.cloudinary.com/ddmg8kbmo/image/upload/v1774605191/Screenshot_2026-03-27_124850_rfihn0.png" class="img-main">
-                <img src="https://res.cloudinary.com/ddmg8kbmo/image/upload/v1774605191/Screenshot_2026-03-27_124904_bugxsj.png" class="img-hover">
-            </div>
-            <h3>YNKO GT-1 Tee Azure</h3>
-            <div class="price-wrapper">
-                <span class="old-price">70 QAR</span>
-                <span class="price sale-red">50 QAR</span>
-            </div>
-            <div class="controls">
-                <select id="size-1"><option>S</option><option selected>M</option><option>L</option></select>
-                <button id="stock-btn-1" class="add-btn" onclick="addToCart('YNKO GT-1 Tee Azure', 50, 'size-1')">ADD TO CART</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="img-container">
-                <span class="badge">SALE</span>
-                <img src="https://res.cloudinary.com/ddmg8kbmo/image/upload/v1774605191/Screenshot_2026-03-27_124809_wpeye6.png" class="img-main">
-                <img src="https://res.cloudinary.com/ddmg8kbmo/image/upload/v1774605191/Screenshot_2026-03-27_124821_xavnsl.png" class="img-hover">
-            </div>
-            <h3>YNKO GT-1 Tee Sakura</h3>
-            <div class="price-wrapper">
-                <span class="old-price">70 QAR</span>
-                <span class="price sale-red">50 QAR</span>
-            </div>
-            <div class="controls">
-                <select id="size-2"><option>XS</option><option selected>S</option><option>M</option></select>
-                <button id="stock-btn-2" class="add-btn" onclick="addToCart('YNKO GT-1 Tee Sakura', 50, 'size-2')">ADD TO CART</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="img-container">
-                <span class="badge">SALE</span>
-                <img src="https://via.placeholder.com/400x500/0a0a0a/fff?text=YNKO+CHAIN" class="img-main">
-                <img src="https://via.placeholder.com/400x500/111/ff0000?text=DETAIL" class="img-hover">
-            </div>
-            <h3>YNKO Chrome Cub Necklace</h3>
-            <div class="price-wrapper">
-                <span class="old-price">25 QAR</span>
-                <span class="price sale-red">15 QAR</span>
-            </div>
-            <div class="controls">
-                <select id="size-3"><option selected>One size</option></select>
-                <button id="stock-btn-3" class="add-btn" onclick="addToCart('YNKO Chrome Cub Necklace', 15, 'size-3')">ADD TO CART</button>
-            </div>
-        </div>
-
-        <div class="product-card">
-            <div class="img-container">
-                <span class="badge">SALE</span>
-                <img src="https://res.cloudinary.com/ddmg8kbmo/image/upload/v1774605191/Screenshot_2026-03-27_124927_l5uepj.png" class="img-main">
-                <img src="https://res.cloudinary.com/ddmg8kbmo/image/upload/v1774542853/Screenshot_2026-03-26_192722_oahwip.png" class="img-hover">
-            </div>
-            <h3>YNKO GT-Cap Azure</h3>
-            <div class="price-wrapper">
-                <span class="old-price">55 QAR</span>
-                <span class="price sale-red">35 QAR</span>
-            </div>
-            <div class="controls">
-                <select id="size-4"><option selected>One size (ADJUSTABLE)</option></select>
-                <button id="stock-btn-4" class="add-btn" onclick="addToCart('YNKO GT-Cap Azure', 35, 'size-4')">ADD TO CART</button>
-            </div>
-        </div>
-    </main>
-
-    <section id="checkout">
-        <div class="checkout-container">
-            <div class="order-summary">
-                <h2>YOUR CART</h2>
-                <div id="cart-display"><p class="empty-msg">CART IS EMPTY</p></div>
-                <div class="fee-row" style="display:flex; justify-content:space-between; padding:10px 0; border-top:1px solid #111;">
-                    <span>DELIVERY (QATAR)</span><span>20 QAR</span>
-                </div>
+           </div>
                 <div class="total-row" style="display:flex; justify-content:space-between; padding:10px 0; font-weight:900; font-size:1.5rem; border-top:1px solid #222;">
                     <span>TOTAL</span><span id="final-total">20 QAR</span>
                 </div>
@@ -137,7 +9,15 @@
                 <form id="order-form" action="https://formspree.io/f/mwvwkypo" method="POST">
                     <input type="text" name="name" placeholder="FULL NAME" required>
                     <input type="tel" id="phone-input" name="phone" placeholder="PHONE (8 DIGITS)" pattern="[0-9]{8}" maxlength="8" required oninput="validatePhone()">
+                    
+                    <div class="promo-group" style="display:flex; gap:5px; margin-bottom: 10px;">
+                        <input type="text" id="promo-input" placeholder="PROMO CODE" style="margin-bottom:0;">
+                        <button type="button" onclick="applyPromo()" style="background:#111; color:#fff; border:1px solid #333; padding:0 15px; font-size:0.7rem; font-weight:900; cursor:pointer;">APPLY</button>
+                    </div>
+                    <p id="promo-msg" style="font-size:0.6rem; margin-bottom:10px; font-weight:900;"></p>
+                    
                     <textarea name="address" placeholder="DELIVERY ADDRESS" required></textarea>
+                    
                     <input type="hidden" name="cart_items" id="cart-input">
                     <button type="submit" id="submit-order-btn" class="submit-btn" disabled>PLACE ORDER</button>
                 </form>
